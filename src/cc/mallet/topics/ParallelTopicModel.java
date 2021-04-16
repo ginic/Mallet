@@ -249,6 +249,7 @@ public class ParallelTopicModel implements Serializable {
         this.modelFilename = filename;
     }
 
+    // TODO Could instances be built up from the state file instead?
     public void addInstances (InstanceList training) {
 
         alphabet = training.getDataAlphabet();
@@ -318,6 +319,7 @@ public class ParallelTopicModel implements Serializable {
         
         fields = line.split(" ");
 
+        // TODO Iterates over the training instances and their topic assignments (come from the corpus file, not the state file)
         for (TopicAssignment document: data) {
             FeatureSequence tokens = (FeatureSequence) document.instance.getData();
             FeatureSequence topicSequence =  (FeatureSequence) document.topicSequence;
@@ -325,7 +327,9 @@ public class ParallelTopicModel implements Serializable {
             int[] topics = topicSequence.getFeatures();
             for (int position = 0; position < tokens.size(); position++) {
                 int type = tokens.getIndexAtPosition(position);
-                
+
+                // TODO Here's where state file index is checked against the mallet corpus file
+                // Is this check even necessary or can we just trust the state file?
                 if (type == Integer.parseInt(fields[3])) {
                     topics[position] = Integer.parseInt(fields[5]);
                 }
@@ -353,7 +357,9 @@ public class ParallelTopicModel implements Serializable {
         // Get the total number of occurrences of each word type
         //int[] typeTotals = new int[numTypes];
         typeTotals = new int[numTypes];
-        
+
+        // TODO This will result in same issue as above, since it's getting the index from the corpus file,
+        // not the state file
         // Create the type-topic counts data structure
         for (TopicAssignment document : data) {
 

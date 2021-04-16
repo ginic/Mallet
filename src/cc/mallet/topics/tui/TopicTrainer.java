@@ -189,6 +189,7 @@ public class TopicTrainer {
             topicModel.setRandomSeed(randomSeed.value);
         }
 
+        // TODO This is where the corpus file gets read and added to the topic model
         if (inputFile.value != null) {
             InstanceList training = null;
             try {
